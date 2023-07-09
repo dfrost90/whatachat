@@ -1,23 +1,13 @@
 import { PropTypes } from 'prop-types';
-import { useEffect, useRef } from 'react';
 import { useGlobalContext } from '../context/global_context';
 import { MdClose } from 'react-icons/md';
 import { ModalWrapper } from './wrappers';
 
-const Modal = ({ children, title }) => {
-  const { modal, setModal } = useGlobalContext();
-  const modalRef = useRef();
-
-  useEffect(() => {
-    if (modal) {
-      modalRef.current.showModal();
-    } else {
-      modalRef.current.close();
-    }
-  }, [modal]);
+const Modal = ({ children, title, innerRef }) => {
+  const { setModal } = useGlobalContext();
 
   return (
-    <ModalWrapper ref={modalRef} onCancel={() => setModal(null)}>
+    <ModalWrapper onCancel={() => setModal(null)} ref={innerRef}>
       {title && <h3 className="title">{title}</h3>}
       {children}
       <button
@@ -35,6 +25,10 @@ const Modal = ({ children, title }) => {
 Modal.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node,
+  innerRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
 };
 
 export default Modal;

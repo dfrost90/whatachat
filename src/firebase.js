@@ -5,7 +5,10 @@ import {
   collection,
   query,
   orderBy,
+  doc,
   addDoc,
+  updateDoc,
+  deleteDoc,
   serverTimestamp,
   where,
 } from 'firebase/firestore';
@@ -20,7 +23,17 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-export { addDoc, serverTimestamp, collection, query, orderBy, where };
+export {
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+  collection,
+  query,
+  orderBy,
+  where,
+};
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);

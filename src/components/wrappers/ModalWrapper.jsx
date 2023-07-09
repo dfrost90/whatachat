@@ -41,13 +41,30 @@ const ModalWrapper = styled.dialog`
     width: 60px;
   }
 
-  .create-form {
+  form {
     display: flex;
     flex-direction: column;
   }
 
   .form-row {
     border-color: var(--clr-modal-divider);
+  }
+
+  .delete-row {
+    padding: 10px 0;
+  }
+
+  .delete-btn {
+    padding: 0;
+  }
+
+  .contact-item {
+    display: inline-block;
+  }
+
+  .remove-contact-btn {
+    display: inline-block;
+    padding: 4px;
   }
 
   .footer {

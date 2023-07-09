@@ -1,9 +1,10 @@
-import { useGlobalContext } from '../context/global_context';
 import { MainWrapper } from './wrappers';
 import Header from './Header';
 import Room from './Room';
 import RoomsList from './RoomsList';
-import CreateEditRoom from './CreateEditRoom';
+import { useGlobalContext } from '../context/global_context';
+import CreateRoomModal from './CreateRoomModal';
+import EditRoomModal from './EditRoomModal';
 
 const UserSpace = () => {
   const { room } = useGlobalContext();
@@ -11,8 +12,17 @@ const UserSpace = () => {
   return (
     <MainWrapper>
       <Header options={{ chat: true }} />
-      {room ? <Room /> : <RoomsList />}
-      <CreateEditRoom {...room} />
+      {room ? (
+        <>
+          <Room />
+          <EditRoomModal />
+        </>
+      ) : (
+        <>
+          <RoomsList />
+          <CreateRoomModal />
+        </>
+      )}
     </MainWrapper>
   );
 };

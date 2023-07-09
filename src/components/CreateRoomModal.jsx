@@ -1,13 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Modal from './Modal';
 import FormRow from './FormRow';
 import { useAuthContext } from '../context/auth_context';
 import { useGlobalContext } from '../context/global_context';
 import { FormRowWrapper } from './wrappers';
+import { addDoc, collection, db, serverTimestamp } from '../firebase';
 
 const CreateRoomModal = () => {
   const { user } = useAuthContext();
-  const { setModal } = useGlobalContext();
+  const { modal, setModal } = useGlobalContext();
   const [contact, setContact] = useState('');
 
   const [room, setRoom] = useState({
@@ -27,8 +28,31 @@ const CreateRoomModal = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const modalRef = useRef();
+  useEffect(() => {
+    if (modal?.type === 'create') {
+      modalRef.current?.showModal();
+    } else {
+      modalRef.current?.close();
+    }
+  }, [modal]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    await addDoc(collection(db, 'rooms'), {
+      ...room,
+      participants: !room.privateRoom ? ['all'] : [...room.participants],
+      createdAt: serverTimestamp(),
+      createdBy: user.uid,
+    });
+
+    setRoom({
+      title: '',
+      privateRoom: false,
+      participants: [],
+    });
+    setModal(null);
   };
 
   const handleCancel = () => {
@@ -36,15 +60,15 @@ const CreateRoomModal = () => {
   };
 
   return (
-    <Modal title="Create new room">
+    <Modal title="Create new room" innerRef={modalRef}>
       <form className="create-form" onSubmit={handleSubmit}>
         <FormRow
           label="Title"
           type="text"
           id="roomId"
-          placeholder="enter room name"
+          placeholder="enter room name (max 100)"
           value={room.title}
-          maxLength="40"
+          maxLength="100"
           required={true}
           handleChange={(e) => setRoom({ ...room, title: e.target.value })}
         />
