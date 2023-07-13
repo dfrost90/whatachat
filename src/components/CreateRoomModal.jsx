@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+
+import { db } from '../firebase';
+
 import Modal from './Modal';
 import FormRow from './FormRow';
 import { useAuthContext } from '../context/auth_context';
 import { useGlobalContext } from '../context/global_context';
 import { FormRowWrapper } from './wrappers';
-import { addDoc, collection, db, serverTimestamp } from '../firebase';
+import { MdRemoveCircleOutline } from 'react-icons/md';
 
 const CreateRoomModal = () => {
   const { user } = useAuthContext();
@@ -19,13 +23,23 @@ const CreateRoomModal = () => {
 
   const contactRef = useRef(null);
   const addContact = () => {
-    if (contactRef.current?.checkValidity()) {
+    if (room.participants.includes(contact)) {
+      return;
+    }
+    if (contact && contactRef.current?.checkValidity()) {
       setRoom({
         ...room,
         participants: [...room.participants, contact],
       });
       setContact('');
     }
+  };
+
+  const removeContact = (c) => {
+    setRoom({
+      ...room,
+      participants: room.participants.filter((user) => user !== c),
+    });
   };
 
   const modalRef = useRef();
@@ -97,7 +111,7 @@ const CreateRoomModal = () => {
                 name="usermail"
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
-                placeholder="enter user gmail"
+                placeholder="enter gmail and click 'add'"
                 maxLength={320}
                 ref={contactRef}
                 required={!room.participants.length}
@@ -109,10 +123,21 @@ const CreateRoomModal = () => {
             {room.participants.length > 0 && (
               <div className="contact-list">
                 Room: {''}
-                {room.participants.map((user, index) => (
+                {room.participants.map((tempUser, index) => (
                   <React.Fragment key={index}>
                     {index > 0 && ', '}
-                    <span className="contact-item">{user}</span>
+                    <div className="contact-item">
+                      <span className="contact-item">{tempUser}</span>
+                      {user.email !== tempUser && (
+                        <button
+                          type="button"
+                          className="btn-type-3 remove-contact-btn"
+                          onClick={() => removeContact(tempUser)}
+                        >
+                          <MdRemoveCircleOutline />
+                        </button>
+                      )}
+                    </div>
                   </React.Fragment>
                 ))}
               </div>

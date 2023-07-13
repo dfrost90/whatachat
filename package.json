@@ -12,13 +12,18 @@
   },
   "dependencies": {
     "emoji-picker-react": "^4.4.9",
+    "moment": "^2.29.4",
     "normalize.css": "^8.0.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.1.1",
+    "react-firebase-pagination": "^1.1.14",
     "react-icons": "^4.10.1",
+    "react-image": "^4.1.0",
+    "react-linkify": "^1.0.0-alpha",
     "react-spinners": "^0.13.8",
+    "react-textarea-autosize": "^8.5.2",
     "styled-components": "^6.0.1"
   },
   "devDependencies": {

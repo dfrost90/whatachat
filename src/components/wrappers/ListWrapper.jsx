@@ -1,22 +1,15 @@
 import { styled } from 'styled-components';
 
 const ListWrapper = styled.div`
-  flex: 1 1 auto;
+  flex: 1 1 100%;
   overflow: hidden;
 
   .container {
     overflow-y: auto;
     padding: 0;
+    position: relative;
     transition: var(--transition);
     transition-property: background-color, color;
-  }
-
-  &.empty-chat .container {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    padding: 10px;
   }
 `;
 

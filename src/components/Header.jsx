@@ -4,10 +4,11 @@ import { useGlobalContext } from '../context/global_context';
 import { MdOutlineColorLens } from 'react-icons/md';
 import { BiChat, BiArrowBack, BiEditAlt } from 'react-icons/bi';
 import { PiSignOutFill } from 'react-icons/pi';
+import CustomizeModal from './CustomizeModal';
 
 const Header = () => {
   const { user, userSignOut } = useAuthContext();
-  const { toggleTheme, setModal, room, setRoom } = useGlobalContext();
+  const { setModal, room, setRoom } = useGlobalContext();
 
   return (
     <HeaderWrapper>
@@ -34,7 +35,7 @@ const Header = () => {
           <button
             className="theme-toggle btn-type-2"
             type="button"
-            onClick={toggleTheme}
+            onClick={() => setModal({ type: 'customize' })}
           >
             <MdOutlineColorLens />
           </button>
@@ -74,6 +75,7 @@ const Header = () => {
           </button>
         </div>
       </div>
+      <CustomizeModal />
     </HeaderWrapper>
   );
 };

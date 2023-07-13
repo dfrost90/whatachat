@@ -1,5 +1,7 @@
-import { db, doc, updateDoc, deleteDoc } from '../firebase';
 import React, { useEffect, useRef, useState } from 'react';
+import { doc, updateDoc, deleteDoc} from 'firebase/firestore';
+import { db } from '../firebase';
+
 import Modal from './Modal';
 import { useGlobalContext } from '../context/global_context';
 import FormRow from './FormRow';
@@ -62,6 +64,7 @@ const EditRoomModal = () => {
 
   const handleRemove = async () => {
     await deleteDoc(doc(db, 'rooms', room.id));
+    sessionStorage.removeItem('room');
     setRoom(null);
     setModal(null);
   };
@@ -94,7 +97,7 @@ const EditRoomModal = () => {
             })
           }
         />
-        {tempRoom.participants && (
+        {tempRoom.privateRoom && (
           <FormRowWrapper className="form-row">
             <label htmlFor="usermail">Add contact:</label>
             <div className="add-contact">
@@ -122,7 +125,7 @@ const EditRoomModal = () => {
                     {index > 0 && ', '}
                     <div className="contact-item">
                       <span className="contact-item">{tempUser}</span>
-                      {user.email !== tempUser && (
+                      {user.email !== tempUser && tempUser !== 'all' && (
                         <button
                           type="button"
                           className="btn-type-3 remove-contact-btn"

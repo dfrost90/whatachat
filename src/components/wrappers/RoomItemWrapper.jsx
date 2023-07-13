@@ -21,9 +21,8 @@ const RoomItemWrapper = styled.li`
     text-align: center;
   }
 
-  .title {
+  .room-title {
     flex: 1 1 auto;
-    font-size: 16px;
     padding: 0 10px;
     overflow: hidden;
     text-align: left;
@@ -31,11 +30,34 @@ const RoomItemWrapper = styled.li`
     white-space: nowrap;
   }
 
-  .date {
-    flex: 0 0 60px;
+  .title {
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .last-message {
+    color: var(--clr-last-message-text);
+    font-size: 12px;
+    margin-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .info {
+    flex: 0 0 100px;
     font-size: 12px;
     width: 60px;
     text-align: right;
+  }
+
+  .new {
+    background-color: var(--clr-accent-1);
+    border-radius: 4px;
+    color: var(--clr-palette-w);
+    font-weight: bold;
+    padding: 2px 4px;
+    text-transform: uppercase;
   }
 `;
 

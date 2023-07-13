@@ -6,6 +6,9 @@ import FormRowWrapper from './FormRowWrapper';
 import ModalWrapper from './ModalWrapper';
 import RoomItemWrapper from './RoomItemWrapper';
 import SendFormWrapper from './SendFormWrapper';
+import MessagesWrapper from './MessagesWrapper';
+import MessageWrapper from './MessageWrapper';
+import SwatchesWrapper from './SwatchesWrapper';
 
 export {
   MainWrapper,
@@ -16,4 +19,7 @@ export {
   ModalWrapper,
   RoomItemWrapper,
   SendFormWrapper,
+  MessagesWrapper,
+  MessageWrapper,
+  SwatchesWrapper,
 };
