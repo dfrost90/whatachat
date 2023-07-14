@@ -1,6 +1,6 @@
 import { PropTypes } from 'prop-types';
 import moment from 'moment/moment';
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { getDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 import { useAuthContext } from '../context/auth_context';
@@ -8,11 +8,10 @@ import { MessageWrapper } from './wrappers';
 import { getUrl } from '../utils/helpers';
 import { BsTrash3 } from 'react-icons/bs';
 import { useGlobalContext } from '../context/global_context';
-import { useDocumentOnce } from 'react-firebase-hooks/firestore';
 import ReactLinkify from 'react-linkify';
 import { Img } from 'react-image';
 import { BiEditAlt } from 'react-icons/bi';
-import { useOutsideClick } from '../hooks/hooks';
+import { useEffect, useState } from 'react';
 
 const Message = (props) => {
   const {
@@ -30,13 +29,22 @@ const Message = (props) => {
 
   const { user } = useAuthContext();
   const { room } = useGlobalContext();
+  const [roomSnap, setRoomSnap] = useState(null);
 
   const messageClass = uid === user?.uid ? 'sent' : 'received';
   const editClass = edit?.id === id && edit?.active ? 'edit-mode' : '';
 
   const links = text.match(getUrl) || [];
 
-  const [roomSnap] = useDocumentOnce(doc(db, 'rooms', room?.id));
+  // const [roomSnap] = useDocumentOnce(doc(db, 'rooms', room?.id));
+
+  useEffect(() => {
+    const getRoom = async () => {
+      const tempRoom = await getDoc(doc(db, 'rooms', room?.id));
+      setRoomSnap(tempRoom);
+    };
+    getRoom();
+  }, []);
 
   const updateVisits = async () => {
     await updateDoc(doc(db, 'rooms', room.id), {

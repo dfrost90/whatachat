@@ -25,8 +25,8 @@ const MessageWrapper = styled.div`
     border-radius: 16px 16px 16px 0;
     color: var(--clr-message-text-received);
     position: relative;
+    min-width: 100px;
     max-width: calc(100% - 100px);
-    width: 400px;
     word-break: break-word;
     z-index: 0;
 

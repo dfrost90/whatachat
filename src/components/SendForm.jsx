@@ -47,7 +47,6 @@ const SendForm = ({ setAllowScroll, edit, setEdit, lastMsg }) => {
       formRef.current?.requestSubmit();
     }
     if (e.keyCode === 38) {
-      // setFormValue(lastMsg?.text);
       setEdit({ ...lastMsg, active: true });
     }
   };
@@ -63,7 +62,7 @@ const SendForm = ({ setAllowScroll, edit, setEdit, lastMsg }) => {
     const timestamp = serverTimestamp();
 
     if (edit) {
-      await updateDoc(doc(db, 'rooms', room.id, 'messages', edit.id), {
+      await updateDoc(doc(db, 'rooms', room?.id, 'messages', edit.id), {
         text: formValue,
         createdAt: edit.createdAt,
         uid: edit.uid,
@@ -71,7 +70,7 @@ const SendForm = ({ setAllowScroll, edit, setEdit, lastMsg }) => {
         edited: true,
       });
     } else {
-      await addDoc(collection(db, 'rooms', `${room.id}/messages`), {
+      await addDoc(collection(db, 'rooms', `${room?.id}/messages`), {
         text: formValue,
         createdAt: timestamp,
         uid,

@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-const MessagesWrapper = styled.div`
+const RoomWrapper = styled.div`
   flex: 1 1 100%;
   overflow: hidden;
 
@@ -24,6 +24,15 @@ const MessagesWrapper = styled.div`
     overflow-y: auto;
     position: relative;
   }
+
+  .prev-container {
+    background: linear-gradient(var(--clr-primary-1) 0%, transparent 100%);
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 60px;
+    padding: 10px;
+  }
 `;
 
-export default MessagesWrapper;
+export default RoomWrapper;

@@ -1,39 +1,54 @@
-import { useCollection } from 'react-firebase-hooks/firestore';
-import { collection, query, where } from 'firebase/firestore';
+import { onSnapshot, collection, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 
 import { ListWrapper } from './wrappers';
 import RoomItem from './RoomItem';
 import Loading from './Loading';
 import { useAuthContext } from '../context/auth_context';
+import { useEffect, useState } from 'react';
 
 const RoomsList = () => {
   const { user } = useAuthContext();
-  const [rooms, loading, error] = useCollection(
-    query(
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const q = query(
       collection(db, 'rooms'),
       where('participants', 'array-contains-any', ['all', user?.email])
-    )
-  );
+    );
+    const unsubscribe = onSnapshot(q, (documents) => {
+      const tempRooms = [];
+      documents.forEach((document) => {
+        tempRooms.push({
+          id: document.id,
+          ...document.data(),
+        });
+      });
+      setLoading(false);
+      setRooms(tempRooms);
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <ListWrapper>
       <div
         className={`${
-          rooms?.docs.length === 0 ? 'container empty' : 'container'
+          rooms?.length === 0 ? 'container empty' : 'container'
         } main-content`}
       >
         <div className="background-texture"></div>
         {loading ? (
           <Loading />
-        ) : rooms && rooms?.docs.length > 0 ? (
+        ) : rooms && rooms?.length > 0 ? (
           <ul>
-            {rooms.docs.map((doc) => {
+            {rooms.map((doc) => {
               return (
                 <RoomItem
                   key={doc.id}
                   data={{
-                    ...doc.data(),
+                    ...doc,
                     id: doc.id,
                   }}
                 />
