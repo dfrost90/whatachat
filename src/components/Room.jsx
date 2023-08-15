@@ -64,7 +64,6 @@ const Room = () => {
   const handlePrev = () => {
     setAllowScroll(false);
 
-    console.log(loadLimit, messages?.length);
     if (loadLimit - messages?.length <= 10) {
       setLoadLimit(loadLimit + 10);
     }
